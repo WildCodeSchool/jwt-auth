@@ -14,10 +14,12 @@ app.use(
 app.use(express.json());
 
 const {
+  getUsers,
   postUser,
   verifyPassword,
   getUserById,
 } = require("./handlers/userHandlers");
+
 const {
   hashPassword,
   getUserByEmail,
@@ -26,6 +28,7 @@ const {
 
 app.get("/", verifyToken, getUserById);
 
+app.get("/users", getUsers)
 app.post("/users", hashPassword, postUser);
 app.post("/login", getUserByEmail, verifyPassword);
 

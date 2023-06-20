@@ -1,0 +1,3 @@
+CREATE TABLE user (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, firstname
+VARCHAR(100), lastname VARCHAR(150), hashedPassword VARCHAR(255), email VARCHAR(
+255));

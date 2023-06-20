@@ -2,6 +2,10 @@ const db = require("../db");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
+const getUsers = (req, res) => {
+  db.query("SELECT * FROM user").then(([result]) => {res.status(200).json(result)}).catch((error) => {console.error(error.message); res.sendStatus(500)})
+}
+
 const postUser = (req, res) => {
   const { firstname, lastname, hashedPassword, email } = req.body;
 
@@ -30,7 +34,6 @@ const verifyPassword = (req, res) => {
         });
 
         delete req.user.hashedPassword;
-        // delete req.body.password;
 
         res.send({ token, user: req.user });
       } else {
@@ -45,7 +48,6 @@ const verifyPassword = (req, res) => {
 
 const getUserById = (req, res) => {
   const { sub } = req.payload;
-  console.log(sub);
 
   db.query("SELECT firstname, lastname FROM user WHERE id = ?", [sub])
     .then(([users]) => {
@@ -63,6 +65,7 @@ const getUserById = (req, res) => {
 };
 
 module.exports = {
+  getUsers,
   postUser,
   verifyPassword,
   getUserById,
