@@ -10,56 +10,18 @@ const hashingOptions = {
 };
 
 const hashPassword = (req, res, next) => {
-  argon2
-    .hash(req.body.password, hashingOptions)
-    .then((hashedPassword) => {
-      console.log(hashedPassword);
-      req.body.hashedPassword = hashedPassword;
-      delete req.body.password;
-      next();
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+  res.send("Coucou")
+  next()
 };
 
 const getUserByEmail = (req, res, next) => {
-  const { email } = req.body;
-
-  db.query("SELECT * FROM user WHERE email = ?", [email])
-    .then(([users]) => {
-      if (users[0] != null) {
-        req.user = users[0];
-        next();
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error retrieving data from database");
-    });
+  res.send("Coucou")
+  next()
 };
 
 const verifyToken = (req, res, next) => {
-  try {
-    const authorizationHeader = req.get("Authorization");
-
-    if (authorizationHeader == null) {
-      throw new Error("Authorization header is missing");
-    }
-
-    const [type, token] = authorizationHeader.split(" ");
-    if (type !== "Bearer") {
-      throw new Error("Authorization header has not the 'Bearer' type");
-    }
-    req.payload = jwt.verify(token, process.env.JWT_SECRET);
-    next();
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(401);
-  }
+  res.send("Coucou")
+  next()
 };
 
 module.exports = {

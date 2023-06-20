@@ -22,46 +22,27 @@ const postUser = (req, res) => {
     });
 };
 
-const verifyPassword = (req, res) => {
-  argon2
-    .verify(req.user.hashedPassword, req.body.password)
-    .then((isVerified) => {
-      if (isVerified) {
-        const payload = { sub: req.user.id };
-
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        });
-
-        delete req.user.hashedPassword;
-
-        res.send({ token, user: req.user });
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-};
 
 const getUserById = (req, res) => {
   const { sub } = req.payload;
-
+  
   db.query("SELECT firstname, lastname FROM user WHERE id = ?", [sub])
-    .then(([users]) => {
-      if (users[0] !== null) {
-        console.log(users[0]);
-        res.status(200).json(users[0]);
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+  .then(([users]) => {
+    if (users[0] !== null) {
+      console.log(users[0]);
+      res.status(200).json(users[0]);
+    } else {
+      res.sendStatus(401);
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.sendStatus(500);
+  });
+};
+
+const verifyPassword = (req, res) => {
+  res.send("Coucou")
 };
 
 module.exports = {
